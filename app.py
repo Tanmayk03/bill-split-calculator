@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import os  # needed for dynamic port
 
 app = Flask(__name__)
 
@@ -10,8 +11,7 @@ def tip_calculator():
             total_bill = float(request.form["total_bill"])
             tip_percentage = float(request.form["tip_percentage"])
             people = int(request.form["people"])
-            
-            # Your original logic
+
             bill_with_tip = total_bill + total_bill * tip_percentage / 100
             result = round(bill_with_tip / people, 2)
         except:
@@ -19,4 +19,6 @@ def tip_calculator():
     return render_template("index.html", result=result)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port, debug=True)
